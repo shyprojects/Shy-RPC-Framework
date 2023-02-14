@@ -1,4 +1,4 @@
-package com.shy.rpc.server;
+package com.shy.rpc;
 
 import com.shy.rpc.enumeration.ResponseCode;
 import com.shy.rpc.pojo.RpcRequest;
@@ -9,6 +9,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /***
+ * 拿到请求，通过反射调用获取结果处理器
  * @author shy
  * @date 2023-02-13 11:25
  */
@@ -31,7 +32,7 @@ public class RequestHandler {
         } catch (NoSuchMethodException e) {
             return RpcResponse.fail(ResponseCode.METHOD_NOT_FOUND);
         }
-        return method.invoke(service, rpcRequest.getParameters());
+        Object res = method.invoke(service, rpcRequest.getParameters());
+        return res;
     }
-
 }

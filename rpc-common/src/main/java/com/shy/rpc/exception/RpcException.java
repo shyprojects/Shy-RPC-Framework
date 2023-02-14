@@ -1,6 +1,6 @@
 package com.shy.rpc.exception;
 
-import com.shy.rpc.pojo.RpcError;
+import com.shy.rpc.enumeration.RpcError;
 
 /***
  * 调用过程中发生的异常

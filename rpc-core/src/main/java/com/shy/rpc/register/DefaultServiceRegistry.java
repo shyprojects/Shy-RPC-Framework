@@ -1,7 +1,7 @@
 package com.shy.rpc.register;
 
 import com.shy.rpc.exception.RpcException;
-import com.shy.rpc.pojo.RpcError;
+import com.shy.rpc.enumeration.RpcError;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
@@ -15,8 +15,8 @@ import java.util.concurrent.ConcurrentHashMap;
 @Slf4j
 public class DefaultServiceRegistry implements ServiceRegistry {
 
-    private final Map<String, Object> serviceMap = new ConcurrentHashMap<>();
-    private final Set<String> registeredService = ConcurrentHashMap.newKeySet();
+    private final static Map<String, Object> serviceMap = new ConcurrentHashMap<>();
+    private final static Set<String> registeredService = ConcurrentHashMap.newKeySet();
 
     @Override
     public <T> void register(T service) {
