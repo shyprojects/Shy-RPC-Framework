@@ -1,13 +1,14 @@
-package com.shy.rpc.netty.server;
+package com.shy.rpc.transport.netty.server;
 
 import com.shy.rpc.pojo.RpcRequest;
 import com.shy.rpc.pojo.RpcResponse;
-import com.shy.rpc.register.DefaultServiceRegistry;
-import com.shy.rpc.register.ServiceRegistry;
 import com.shy.rpc.RequestHandler;
+import com.shy.rpc.provider.DefaultServiceProvider;
+import com.shy.rpc.provider.ServiceProvider;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.extern.slf4j.Slf4j;
+
 
 /***
  * @author shy
@@ -16,22 +17,23 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class NettyServerHandler extends SimpleChannelInboundHandler<RpcRequest> {
     private static RequestHandler requestHandler;
-    private static ServiceRegistry serviceRegistry;
+    private static ServiceProvider serviceProvider;
 
     static {
         requestHandler = new RequestHandler();
-        serviceRegistry = new DefaultServiceRegistry();
+        serviceProvider = new DefaultServiceProvider();
     }
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, RpcRequest request) throws Exception {
         log.info("服务器收到消息:{}", request);
         //通过接口名获取对应的实现类
-        Object service = serviceRegistry.getService(request.getInterfaceName());
+        Object service = serviceProvider.getServiceProvider(request.getInterfaceName());
         //调用该实现类对应的方法获取返回值
         Object res = requestHandler.handler(request, service);
         //封装response对象返回给客户端
         RpcResponse<Object> resp = RpcResponse.ok(res);
+        resp.setRequestId(request.getRequestId());
         channelHandlerContext.writeAndFlush(resp);
     }
 

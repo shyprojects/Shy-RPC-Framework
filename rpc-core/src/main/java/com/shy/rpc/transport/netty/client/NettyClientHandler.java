@@ -1,4 +1,4 @@
-package com.shy.rpc.netty.client;
+package com.shy.rpc.transport.netty.client;
 
 import com.shy.rpc.pojo.RpcResponse;
 import io.netty.channel.ChannelHandlerContext;
@@ -18,7 +18,7 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<RpcResponse>
         //客户端拿到响应结果
         log.info(String.format("客户端接收到消息: %s", rpcResponse));
         System.out.println(rpcResponse.getData().getClass());
-        AttributeKey<RpcResponse> key = AttributeKey.valueOf("rpcResponse");
+        AttributeKey<RpcResponse> key = AttributeKey.valueOf("rpcResponse" + rpcResponse.getRequestId());
         ctx.channel().attr(key).set(rpcResponse);
         ctx.channel().close();
     }

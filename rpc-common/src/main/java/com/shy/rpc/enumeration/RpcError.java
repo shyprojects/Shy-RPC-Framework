@@ -16,7 +16,10 @@ public enum RpcError {
     SERVICE_NOT_FOUND("找不到对应的服务"),
     SERVICE_NOT_IMPLEMENT_ANY_INTERFACE("注册的服务未实现接口"),
     UNKNOWN_SERIALIZER("不识别的(反)序列化器"),
-    ERROR_MSG_TYPE("错误的消息类型");
+    ERROR_MSG_TYPE("错误的消息类型"),
+    FAILED_TO_CONNECT_TO_SERVICE_REGISTRY("连接注册中心失败"),
+    REGISTER_SERVICE_FAILED("注册服务失败"),
+    CLIENT_CONNECT_SERVER_FAILURE("客户端连接服务端失败");
 
     private final String message;
 }

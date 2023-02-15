@@ -6,5 +6,17 @@ package com.shy.rpc;
  * @date 2023-02-13 14:45
  */
 public interface RpcServer {
-    void start(int port);
+    /**
+     * 启动服务
+     * @param
+     */
+    void start();
+
+    /**
+     * 注册服务
+     * @param service
+     * @param serviceClass
+     * @param <T>
+     */
+    <T>void publishService(T service, Class<T> serviceClass);
 }

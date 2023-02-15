@@ -1,7 +1,7 @@
-package com.shy.rpc.register;
+package com.shy.rpc.provider;
 
-import com.shy.rpc.exception.RpcException;
 import com.shy.rpc.enumeration.RpcError;
+import com.shy.rpc.exception.RpcException;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
@@ -9,17 +9,18 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /***
+ * 默认服务注册表，将服务保存到本地并且对外提供获取服务的功能
  * @author shy
- * @date 2023-02-13 10:53
+ * @date 2023-02-14 14:11
  */
 @Slf4j
-public class DefaultServiceRegistry implements ServiceRegistry {
+public class DefaultServiceProvider implements ServiceProvider{
+
 
     private final static Map<String, Object> serviceMap = new ConcurrentHashMap<>();
     private final static Set<String> registeredService = ConcurrentHashMap.newKeySet();
-
     @Override
-    public <T> void register(T service) {
+    public <T> void addServiceProvider(T service) {
         String serviceName = service.getClass().getName();
         if (registeredService.contains(serviceName))
             return;
@@ -35,7 +36,7 @@ public class DefaultServiceRegistry implements ServiceRegistry {
     }
 
     @Override
-    public Object getService(String serviceName) {
+    public Object getServiceProvider(String serviceName) {
         Object service = serviceMap.get(serviceName);
         if (service == null) {
             throw new RpcException(RpcError.SERVICE_NOT_FOUND);

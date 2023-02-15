@@ -1,7 +1,7 @@
-package com.shy.rpc.socket.server;
+package com.shy.rpc.transport.socket.server;
 
 import com.shy.rpc.RequestHandler;
-import com.shy.rpc.register.ServiceRegistry;
+import com.shy.rpc.provider.ServiceProvider;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -16,18 +16,18 @@ import java.util.concurrent.*;
 @Slf4j
 public class RpcServer {
     private final ExecutorService threadPool;
-    private final ServiceRegistry serviceRegistry;
+    private final ServiceProvider serviceProvider;
 
     private RequestHandler handler = new RequestHandler();
 
-    public RpcServer(ServiceRegistry serviceRegistry) {
+    public RpcServer(ServiceProvider serviceProvider) {
         int corePoolSize = 5;
         int maximumPoolSize = 50;
         long keepAliveTime = 60;
         BlockingQueue<Runnable> workingQueue = new ArrayBlockingQueue<>(100);
         ThreadFactory threadFactory = Executors.defaultThreadFactory();
         threadPool = new ThreadPoolExecutor(corePoolSize, maximumPoolSize, keepAliveTime, TimeUnit.SECONDS, workingQueue, threadFactory);
-        this.serviceRegistry = serviceRegistry;
+        this.serviceProvider = serviceProvider;
     }
     public void start(Object service,int port){
         try (ServerSocket serverSocket = new ServerSocket(port)){

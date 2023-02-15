@@ -2,20 +2,21 @@ package com.shy.rpc.test;
 
 
 
+import com.alibaba.nacos.api.exception.NacosException;
+import com.alibaba.nacos.api.naming.NamingFactory;
+import com.alibaba.nacos.api.naming.NamingService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.shy.rpc.RpcServer;
 import com.shy.rpc.api.service.HelloService;
-import com.shy.rpc.api.service.UserService;
-import com.shy.rpc.netty.server.NettyServer;
-import com.shy.rpc.register.DefaultServiceRegistry;
-import com.shy.rpc.register.ServiceRegistry;
+import com.shy.rpc.transport.netty.server.NettyServer;
 import com.shy.rpc.test.service.HelloServiceImpl;
-import com.shy.rpc.test.service.UserServiceImpl;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.IOException;
 import java.io.Serializable;
+
+import static com.alibaba.nacos.api.annotation.NacosProperties.SERVER_ADDR;
 
 
 /***
@@ -23,25 +24,14 @@ import java.io.Serializable;
  * @date 2023-02-12 19:53
  */
 public class TestServer {
-    public static void main(String[] args) throws Exception {
-
+    public static void main(String[] args) throws NacosException {
+        RpcServer server = new NettyServer("127.0.0.1",8080);
         HelloService helloService = new HelloServiceImpl();
-        UserService userService = new UserServiceImpl();
-        ServiceRegistry serviceRegistry = new DefaultServiceRegistry();
-        serviceRegistry.register(helloService);
-        serviceRegistry.register(userService);
-        NettyServer nettyServer = new NettyServer();
-        nettyServer.start(8080);
-        //        test();
+        server.publishService(helloService,HelloService.class);
+        server.start();
     }
 
-    static void test() throws IOException {
-        Person person = new Person("张三");
-        ObjectMapper objectMapper = new ObjectMapper();
-        byte[] bytes = objectMapper.writeValueAsBytes(person);
-        Person person1 = objectMapper.readValue(bytes, Person.class);
-        System.out.println(person1);
-    }
+
 
     @AllArgsConstructor
     @Data

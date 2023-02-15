@@ -15,6 +15,8 @@ public interface CommonSerializer {
     //获取具体的序列化类
     static CommonSerializer getSerializer(int serializerCode){
         switch (serializerCode){
+            case 0:
+                return new KryoSerializer();
             case 1:
                 return new JsonSerializer();
             default:

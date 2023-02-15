@@ -1,9 +1,14 @@
-package com.shy.rpc.netty.server;
+package com.shy.rpc.transport.netty.server;
 
 import com.shy.rpc.RpcServer;
 import com.shy.rpc.codec.MessageDecoder;
 import com.shy.rpc.codec.MessageEncoder;
-import com.shy.rpc.serializer.JsonSerializer;
+import com.shy.rpc.hook.ShutdownHook;
+import com.shy.rpc.provider.DefaultServiceProvider;
+import com.shy.rpc.provider.ServiceProvider;
+import com.shy.rpc.register.NacosServiceRegistry;
+import com.shy.rpc.register.ServiceRegistry;
+import com.shy.rpc.serializer.KryoSerializer;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -11,10 +16,12 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import lombok.extern.slf4j.Slf4j;
+
+import java.net.InetSocketAddress;
+
 
 /***
  * Netty服务器端
@@ -23,8 +30,23 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class NettyServer implements RpcServer {
+
+
+    private final String host;
+    private final int port;
+    private final ServiceRegistry serviceRegistry;
+    private final ServiceProvider serviceProvider;
+
+    public NettyServer(String host,int port){
+        this.host = host;
+        this.port = port;
+        serviceProvider = new DefaultServiceProvider();
+        serviceRegistry = new NacosServiceRegistry();
+    }
     @Override
-    public void start(int port) {
+    public void start() {
+        //注册钩子，在服务器结束的时候注销服务
+        ShutdownHook.getShutdownHook().addClearAllHook();
         NioEventLoopGroup bossGroup = new NioEventLoopGroup(1);
         NioEventLoopGroup workerGroup = new NioEventLoopGroup();
         try {
@@ -39,7 +61,7 @@ public class NettyServer implements RpcServer {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
                             ch.pipeline().addLast(new MessageDecoder());
-                            ch.pipeline().addLast(new MessageEncoder(new JsonSerializer()));
+                            ch.pipeline().addLast(new MessageEncoder(new KryoSerializer()));
                             ch.pipeline().addLast(new NettyServerHandler());
                         }
                     });
@@ -52,5 +74,12 @@ public class NettyServer implements RpcServer {
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();
         }
+    }
+
+    //注册具体服务
+    @Override
+    public <T> void publishService(T service, Class<T> serviceClass) {
+        serviceProvider.addServiceProvider(service);
+        serviceRegistry.register(serviceClass.getCanonicalName(),new InetSocketAddress(host,port));
     }
 }

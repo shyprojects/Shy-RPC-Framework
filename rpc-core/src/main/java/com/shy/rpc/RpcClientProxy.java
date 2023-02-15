@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.UUID;
 
 /***
  * @author shy
@@ -31,7 +32,8 @@ public class RpcClientProxy implements InvocationHandler {
                 .setInterfaceName(method.getDeclaringClass().getName())
                 .setParameters(args)
                 .setMethodName(method.getName())
-                .setParamTypes(method.getParameterTypes());
+                .setParamTypes(method.getParameterTypes())
+                .setRequestId(UUID.randomUUID().toString());
         log.info("远程调用:{}#{}",rpcRequest.getInterfaceName(),rpcRequest.getMethodName());
         Object res = rpcClient.sendRequest(rpcRequest);
         return res;
