@@ -1,4 +1,4 @@
-package com.shy.rpc;
+package com.shy.rpc.handler;
 
 import com.shy.rpc.enumeration.ResponseCode;
 import com.shy.rpc.pojo.RpcRequest;
@@ -16,8 +16,6 @@ import java.lang.reflect.Method;
 @Slf4j
 public class RequestHandler {
 
-
-
     public Object handler(RpcRequest rpcRequest, Object service) {
         Object res = null;
         try {
@@ -27,7 +25,6 @@ public class RequestHandler {
         }
         return res;
     }
-
     private Object invokeTargetMethod(RpcRequest rpcRequest, Object service) throws IllegalAccessException, InvocationTargetException {
         Method method;
         try {

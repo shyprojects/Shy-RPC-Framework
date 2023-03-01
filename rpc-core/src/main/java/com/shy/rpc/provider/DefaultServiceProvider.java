@@ -20,8 +20,7 @@ public class DefaultServiceProvider implements ServiceProvider{
     private final static Map<String, Object> serviceMap = new ConcurrentHashMap<>();
     private final static Set<String> registeredService = ConcurrentHashMap.newKeySet();
     @Override
-    public <T> void addServiceProvider(T service) {
-        String serviceName = service.getClass().getName();
+    public <T> void addServiceProvider(T service,String serviceName) {
         if (registeredService.contains(serviceName))
             return;
         registeredService.add(serviceName);
@@ -34,7 +33,6 @@ public class DefaultServiceProvider implements ServiceProvider{
         }
         log.info("向接口: {} 注册服务: {}", interfaces, serviceName);
     }
-
     @Override
     public Object getServiceProvider(String serviceName) {
         Object service = serviceMap.get(serviceName);

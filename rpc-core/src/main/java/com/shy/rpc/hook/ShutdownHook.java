@@ -22,7 +22,7 @@ public class ShutdownHook {
     }
 
     public void addClearAllHook() {
-        log.info("服务器将关闭,并且注销所有服务...");
+        log.info("服务器关闭的时候,将自动注销所有服务...");
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             NacosUtil.clearRegistry();
             threadPool.shutdown();

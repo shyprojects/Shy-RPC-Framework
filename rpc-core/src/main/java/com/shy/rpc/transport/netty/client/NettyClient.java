@@ -1,6 +1,6 @@
 package com.shy.rpc.transport.netty.client;
 
-import com.shy.rpc.RpcClient;
+import com.shy.rpc.transport.RpcClient;
 import com.shy.rpc.codec.MessageDecoder;
 import com.shy.rpc.codec.MessageEncoder;
 import com.shy.rpc.loadbalancer.LoadBalancer;

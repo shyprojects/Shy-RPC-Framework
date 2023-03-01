@@ -2,7 +2,7 @@ package com.shy.rpc.transport.netty.server;
 
 import com.shy.rpc.pojo.RpcRequest;
 import com.shy.rpc.pojo.RpcResponse;
-import com.shy.rpc.RequestHandler;
+import com.shy.rpc.handler.RequestHandler;
 import com.shy.rpc.provider.DefaultServiceProvider;
 import com.shy.rpc.provider.ServiceProvider;
 import io.netty.channel.ChannelHandlerContext;

@@ -19,7 +19,8 @@ public enum RpcError {
     ERROR_MSG_TYPE("错误的消息类型"),
     FAILED_TO_CONNECT_TO_SERVICE_REGISTRY("连接注册中心失败"),
     REGISTER_SERVICE_FAILED("注册服务失败"),
-    CLIENT_CONNECT_SERVER_FAILURE("客户端连接服务端失败");
-
+    CLIENT_CONNECT_SERVER_FAILURE("客户端连接服务端失败"),
+    SERVICE_SCAN_PACKAGE_NOT_FOUND("启动类ServiceScan注解缺失"),
+    UNKNOWN_ERROR("出现未知错误"),;
     private final String message;
 }

@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /***
  * @author shy
@@ -16,4 +17,6 @@ import java.io.Serializable;
 public class HelloObject implements Serializable {
     private Integer id;
     private String message;
+
+
 }

@@ -1,8 +1,6 @@
-package com.shy.rpc;
+package com.shy.rpc.transport;
 
-import com.shy.rpc.RpcClient;
 import com.shy.rpc.pojo.RpcRequest;
-import com.shy.rpc.pojo.RpcResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

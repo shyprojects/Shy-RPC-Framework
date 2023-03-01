@@ -1,4 +1,4 @@
-package com.shy.rpc;
+package com.shy.rpc.transport;
 
 /***
  * 通用的服务端接口
@@ -15,8 +15,8 @@ public interface RpcServer {
     /**
      * 注册服务
      * @param service
-     * @param serviceClass
+     * @param serviceName
      * @param <T>
      */
-    <T>void publishService(T service, Class<T> serviceClass);
+    <T>void publishService(T service, String serviceName);
 }

@@ -7,7 +7,7 @@ package com.shy.rpc.provider;
  */
 public interface ServiceProvider {
 
-    <T>void addServiceProvider(T object);
+    <T>void addServiceProvider(T object,String serviceName);
 
     Object getServiceProvider(String serviceName);
 }

@@ -1,6 +1,7 @@
 package com.shy.rpc.transport.netty.server;
 
-import com.shy.rpc.RpcServer;
+import com.shy.rpc.transport.AbstractRpcServer;
+import com.shy.rpc.transport.RpcServer;
 import com.shy.rpc.codec.MessageDecoder;
 import com.shy.rpc.codec.MessageEncoder;
 import com.shy.rpc.hook.ShutdownHook;
@@ -29,19 +30,13 @@ import java.net.InetSocketAddress;
  * @date 2023-02-13 14:45
  */
 @Slf4j
-public class NettyServer implements RpcServer {
-
-
-    private final String host;
-    private final int port;
-    private final ServiceRegistry serviceRegistry;
-    private final ServiceProvider serviceProvider;
-
+public class NettyServer extends AbstractRpcServer {
     public NettyServer(String host,int port){
         this.host = host;
         this.port = port;
         serviceProvider = new DefaultServiceProvider();
         serviceRegistry = new NacosServiceRegistry();
+        scanServices();
     }
     @Override
     public void start() {
@@ -74,12 +69,5 @@ public class NettyServer implements RpcServer {
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();
         }
-    }
-
-    //注册具体服务
-    @Override
-    public <T> void publishService(T service, Class<T> serviceClass) {
-        serviceProvider.addServiceProvider(service);
-        serviceRegistry.register(serviceClass.getCanonicalName(),new InetSocketAddress(host,port));
     }
 }

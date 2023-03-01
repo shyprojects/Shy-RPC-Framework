@@ -1,10 +1,11 @@
 package com.shy.rpc.test;
 
-import com.shy.rpc.RpcClient;
-import com.shy.rpc.api.HelloObject;
 import com.shy.rpc.api.pojo.User;
+import com.shy.rpc.api.service.UserService;
+import com.shy.rpc.transport.RpcClient;
+import com.shy.rpc.api.HelloObject;
 import com.shy.rpc.api.service.HelloService;
-import com.shy.rpc.RpcClientProxy;
+import com.shy.rpc.transport.RpcClientProxy;
 import com.shy.rpc.transport.netty.client.NettyClient;
 
 /***
@@ -15,8 +16,8 @@ public class TestClient {
     public static void main(String[] args) {
         RpcClient client = new NettyClient();
         RpcClientProxy proxy = new RpcClientProxy(client);
-        HelloService helloService = proxy.getProxy(HelloService.class);
-        String hello = helloService.hello(new HelloObject(1, "hello"));
-        System.out.println(hello);
+        UserService userService = proxy.getProxy(UserService.class);
+        User user = userService.getById(1);
+        System.out.println(user);
     }
 }
