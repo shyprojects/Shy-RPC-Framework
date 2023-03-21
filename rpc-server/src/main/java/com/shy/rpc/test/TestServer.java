@@ -18,6 +18,12 @@ public class TestServer {
     public static void main(String[] args) throws NacosException {
 //        RpcServer server = new NettyServer("127.0.0.1",8080);
 //        server.start();
+        test();
+    }
+
+    private static void test() {
+        String s = "ab";
+        System.out.println(s.substring(1, 1));
     }
 }
 
